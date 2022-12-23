@@ -27,5 +27,15 @@ module.exports = {
     'react/function-component-definition': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'no-underscore-dangle': 'off',
+    'jsx-a11y/label-has-associated-control': [
+      'error',
+      {
+        labelComponents: [],
+        labelAttributes: [],
+        controlComponents: [],
+        assert: 'either',
+        depth: 25,
+      },
+    ],
   },
 };

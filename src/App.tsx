@@ -1,6 +1,7 @@
 import React from 'react';
 import { ParticipantsList } from './ParticipantsList';
 import { Participant } from './Participant';
+import { ParticipantsInput } from './ParticipantsInput';
 
 export default function App() {
   const participants: Participant[] = [
@@ -40,8 +41,9 @@ export default function App() {
   );
 
   return (
-    <div className="App">
-      <ParticipantsList participants={sortedParticipants} />
+    <div className="flex justify-center w-full">
+      <ParticipantsInput />
+      {/* <ParticipantsList participants={sortedParticipants} /> */}
     </div>
   );
 }
