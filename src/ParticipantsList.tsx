@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createTeams } from './teams-generator';
 import { Team } from './Team';
 import { Participant } from './Participant';
@@ -8,8 +8,9 @@ export const ParticipantsList = ({
 }: {
   participants: Participant[];
 }) => {
-  const [selectedParticipants, setSelectedParticipants] =
-    useState(participants);
+  const [selectedParticipants, setSelectedParticipants] = useState<
+    Participant[]
+  >([]);
 
   const [teams, setTeams] = useState<Team[]>([]);
   const [numberOfTeams, setNumberOfTeams] = useState(2);
@@ -19,7 +20,7 @@ export const ParticipantsList = ({
     // depending on whether they are already in the list
     if (selectedParticipants.includes(participant)) {
       setSelectedParticipants(
-        selectedParticipants.filter((p) => p !== participant)
+        selectedParticipants.filter((p) => p.name !== participant.name)
       );
     } else {
       setSelectedParticipants([...selectedParticipants, participant]);
@@ -38,9 +39,16 @@ export const ParticipantsList = ({
     setTeams(createTeams(selectedParticipants, numberOfTeams));
   }
 
+  useEffect(() => {
+    setSelectedParticipants(participants);
+  }, [participants]);
+
   return (
     <div className="flex-col space-y-4">
       <div className="flex-col bg-teal-400 rounded shadow-lg p-4">
+        <div>
+          Number of participants selected: {selectedParticipants.length}
+        </div>
         <ul>
           {participants.map((participant) => (
             <li key={participant.name}>

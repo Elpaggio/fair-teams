@@ -15,6 +15,10 @@ function parseParticipants(input: string): Participant[] {
   return participants;
 }
 
+function sortParticipants(participants: Participant[]) {
+  return participants.slice().sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export const ParticipantsInput = () => {
   const [parsedParticipants, setParsedParticipants] = useState<
     Participant[] | null
@@ -50,10 +54,6 @@ export const ParticipantsInput = () => {
         console.error(error);
       }
     );
-  }
-
-  function sortParticipants(participants: Participant[]) {
-    return participants.slice().sort((a, b) => a.name.localeCompare(b.name));
   }
 
   useEffect(() => {
