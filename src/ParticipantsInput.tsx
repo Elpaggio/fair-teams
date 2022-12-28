@@ -52,6 +52,10 @@ export const ParticipantsInput = () => {
     );
   }
 
+  function sortParticipants(participants: Participant[]) {
+    return participants.slice().sort((a, b) => a.name.localeCompare(b.name));
+  }
+
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const participants = searchParams.get('participants');
@@ -99,7 +103,9 @@ export const ParticipantsInput = () => {
 
       {parsedParticipants && (
         <div className="bg-teal-200 p-4 rounded-lg w-full space-y-4 drop-shadow-lg">
-          <ParticipantsList participants={parsedParticipants} />
+          <ParticipantsList
+            participants={sortParticipants(parsedParticipants)}
+          />
         </div>
       )}
     </div>
