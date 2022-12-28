@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Participant } from './Participant';
 import { ParticipantsList } from './ParticipantsList';
 
@@ -31,6 +31,40 @@ export const ParticipantsInput = () => {
     setParsedParticipants(newParticipants);
   }
 
+  function handleCopyToUrlClick() {
+    if (!inputRef.current) {
+      throw Error('No input');
+    }
+
+    const searchParams = new URLSearchParams();
+    searchParams.set('participants', inputRef.current.value);
+    const fullUrl = `${window.location.href}?${searchParams.toString()}`;
+
+    navigator.clipboard.writeText(fullUrl).then(
+      () => {
+        // The string was successfully copied to the clipboard
+        console.log('bookmark succesfully copied to clipboard');
+      },
+      (error) => {
+        // An error occurred while copying the string to the clipboard
+        console.error(error);
+      }
+    );
+  }
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const participants = searchParams.get('participants');
+    if (participants) {
+      const newParticipants = parseParticipants(participants);
+      if (!inputRef.current) {
+        throw Error('No input');
+      }
+      inputRef.current.value = participants;
+      setParsedParticipants(newParticipants);
+    }
+  }, []);
+
   return (
     <div className="flex flex-col justify-center sm:max-w-2xl p-4 rounded-lg text-ochre-100 w-full text-ochre-900 space-y-4">
       <div className="flex-col bg-green-200 p-4 rounded-lg w-full space-y-4 drop-shadow-lg">
@@ -51,6 +85,15 @@ export const ParticipantsInput = () => {
           >
             Set participants
           </button>
+          {parsedParticipants && (
+            <button
+              type="button"
+              onClick={handleCopyToUrlClick}
+              className="bg-teal-300 rounded inline-block px-3 py-1.5 hover:bg-teal-400 hover:shadow-lg font-bold text-white ring-2 ring-white drop-shadow-lg"
+            >
+              Copy to URL
+            </button>
+          )}
         </div>
       </div>
 
