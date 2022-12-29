@@ -29,7 +29,7 @@ export function createTeams(
   // Initialize an array to store the teams
   const teams: Array<Team> = [];
   for (let i = 0; i < numTeams; i += 1) {
-    teams.push(new Team(i));
+    teams.push(new Team(String.fromCharCode(65 + i)));
   }
 
   // Iterate through the participants and assign each one to the team

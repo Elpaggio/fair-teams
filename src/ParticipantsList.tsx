@@ -40,7 +40,17 @@ export const ParticipantsList = ({
   }
 
   useEffect(() => {
-    setSelectedParticipants(participants);
+    let selected = participants;
+    // we went to preserve the selection state of already selected participants
+    if (selectedParticipants.length > 0) {
+      selected = participants.filter((p) => {
+        const pe = selectedParticipants.find((sp) => sp.name === p.name);
+        return !!pe;
+      });
+    }
+
+    setSelectedParticipants(selected);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participants]);
 
   return (
@@ -98,15 +108,15 @@ export const ParticipantsList = ({
       <div>
         {teams && (
           <ul>
-            {teams.map((team, index) => (
-              <div className="bg-green-200 rounded shadow-lg p-2">
+            {teams.map((team) => (
+              <div className="bg-green-200 rounded shadow-lg p-2" key={team.id}>
                 <div className="bg-teal-300 space-y-2 rounded shadow-lg">
                   <li
                     key={team.id}
                     className="bg-teal-300 rounded shadow-lg p-2"
                   >
                     <div className="text-lg font-bold">
-                      <div>Team {index + 1}</div>
+                      <div>Team {team.id}</div>
                       <div>
                         Tot. rating:{' '}
                         {team.participants.reduce(
