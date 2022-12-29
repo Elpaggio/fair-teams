@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: debian-11
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.19.0
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build website
+        run: yarn build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
